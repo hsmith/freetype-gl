@@ -94,6 +94,8 @@ SET( FREETYPE_GL_SRC freetype-gl.h
 
 ADD_LIBRARY( freetype-gl STATIC ${FREETYPE_GL_SRC} )
 
+TARGET_LINK_LIBRARIES( freetype-gl PUBLIC ${GLEW_LIBRARY} )
+
 LINK_DIRECTORIES(
     ${PROJECT_SOURCE_DIR}
 )
@@ -102,14 +104,15 @@ IF (freetype-gl_BUILD_MAKEFONT)
     ADD_EXECUTABLE( makefont makefont.c )
 
     IF(NOT APPLE)
-        TARGET_LINK_LIBRARIES( makefont ${GLEW_LIBRARY} )
+        TARGET_LINK_LIBRARIES( makefont PUBLIC ${GLEW_LIBRARY} )
     ENDIF()
 
     TARGET_LINK_LIBRARIES( makefont
-                           freetype-gl
-                           ${OPENGL_LIBRARY}
-                           ${FREETYPE_LIBRARIES}
-                           ${MATH_LIBRARY})
+                            PUBLIC
+                             freetype-gl
+                             ${OPENGL_LIBRARY}
+                             ${FREETYPE_LIBRARIES}
+                             ${MATH_LIBRARY})
 
     if(MSVC)
         # Compile makefont as C++
